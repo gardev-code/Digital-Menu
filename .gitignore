@@ -1,0 +1,38 @@
+# ─────────────────────────────────────────────
+# Digital Menu — .gitignore
+# ─────────────────────────────────────────────
+
+# Dependencies
+node_modules/
+
+# Environment — NEVER commit real credentials
+.env
+
+# Build output
+dist/
+build/
+
+# Test coverage reports
+coverage/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime
+pids/
+*.pid
+*.seed
