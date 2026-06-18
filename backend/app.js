@@ -48,6 +48,8 @@ app.get('/', (_req, res) => {
 // API Routes (mounted in future batches)
 // ─────────────────────────────────────────────
 
+app.use('/api/auth', require('./routes/authRoutes'));
+
 // Example mount points — uncomment as each batch is delivered:
 // app.use('/api/v1/auth',        require('./routes/auth.routes'));
 // app.use('/api/v1/admin',       require('./routes/admin.routes'));
