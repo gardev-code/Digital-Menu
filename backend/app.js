@@ -53,7 +53,7 @@ app.use('/api/auth', require('./routes/authRoutes'));
 // Example mount points — uncomment as each batch is delivered:
 // app.use('/api/v1/auth',        require('./routes/auth.routes'));
 // app.use('/api/v1/admin',       require('./routes/admin.routes'));
-// app.use('/api/v1/restaurants', require('./routes/restaurant.routes'));
+ app.use('/api/restaurants', require('./routes/restaurantRoutes'));
 // app.use('/api/v1/menus',       require('./routes/menu.routes'));
 // app.use('/api/v1/qr',          require('./routes/qr.routes'));
 
