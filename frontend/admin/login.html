@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digital Menu Admin — Sign in to your account" />
+  <title>Sign In — Digital Menu</title>
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+<body>
+
+<main class="login-page">
+
+  <div class="login-card">
+
+    <!-- Logo -->
+    <a href="#" class="login-logo" aria-label="Digital Menu">
+      <div class="login-logo-mark">DM</div>
+      <span class="login-logo-text">Digital Menu</span>
+    </a>
+
+    <!-- Heading -->
+    <div class="login-heading">
+      <h1 class="login-title">Welcome back</h1>
+      <p class="login-subtitle">Sign in to the admin dashboard</p>
+    </div>
+
+    <!-- Alert -->
+    <div id="login-alert" class="login-alert-wrapper" role="alert" aria-live="polite"></div>
+
+    <!-- Form -->
+    <form id="login-form" class="login-form" novalidate autocomplete="on">
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-input"
+          placeholder="admin@digitalmenu.com"
+          autocomplete="email"
+          required
+          autofocus
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-input"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <div class="login-form-footer">
+        <label class="form-check">
+          <input type="checkbox" id="remember-me" />
+          <span class="form-check-label">Remember me</span>
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        id="login-btn"
+        class="btn btn-primary btn-full btn-lg"
+      >
+        Sign in
+      </button>
+
+    </form>
+
+  </div>
+
+</main>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/admin.js"></script>
+<script>Admin.initLoginPage();</script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digital Menu Admin — Dashboard" />
+  <title>Dashboard — Digital Menu</title>
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+
+    <a href="dashboard.html" class="sidebar-logo" aria-label="Digital Menu home">
+      <div class="sidebar-logo-mark">DM</div>
+      <span class="sidebar-logo-text">Digital Menu</span>
+    </a>
+
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <div class="sidebar-nav-label">Main</div>
+      <a href="dashboard.html" class="sidebar-nav-link">
+        <span class="nav-icon">⊞</span>
+        Dashboard
+      </a>
+      <a href="restaurants.html" class="sidebar-nav-link">
+        <span class="nav-icon">🍽</span>
+        Restaurants
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" data-user-initial>A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" data-user-name>Loading…</div>
+          <div class="sidebar-user-role" data-user-role>Super Admin</div>
+        </div>
+      </div>
+      <button
+        class="btn btn-ghost btn-full mt-4"
+        data-logout
+        style="justify-content: flex-start; gap: var(--space-3);"
+        aria-label="Sign out"
+      >
+        <span>↩</span> Sign out
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Main -->
+  <div class="admin-main">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle sidebar">☰</button>
+      <h2 class="admin-header-title">Dashboard</h2>
+    </header>
+
+    <!-- Content -->
+    <main class="admin-content">
+
+      <div class="page-header">
+        <h1 class="page-title">Overview</h1>
+        <p class="page-subtitle">Platform summary and quick actions</p>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+
+        <div class="stat-card total">
+          <div class="stat-card-header">
+            <span class="stat-label">Total Restaurants</span>
+            <div class="stat-icon total">🍽</div>
+          </div>
+          <div class="stat-value" id="stat-total">
+            <div class="stat-value-loading"></div>
+          </div>
+          <div class="stat-desc">All registered restaurants</div>
+        </div>
+
+        <div class="stat-card active">
+          <div class="stat-card-header">
+            <span class="stat-label">Active</span>
+            <div class="stat-icon active">✓</div>
+          </div>
+          <div class="stat-value" id="stat-active">
+            <div class="stat-value-loading"></div>
+          </div>
+          <div class="stat-desc">Publicly visible restaurants</div>
+        </div>
+
+        <div class="stat-card inactive">
+          <div class="stat-card-header">
+            <span class="stat-label">Inactive</span>
+            <div class="stat-icon inactive">⏸</div>
+          </div>
+          <div class="stat-value" id="stat-inactive">
+            <div class="stat-value-loading"></div>
+          </div>
+          <div class="stat-desc">Suspended or deactivated</div>
+        </div>
+
+      </div>
+
+      <!-- Quick actions -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Quick Actions</span>
+        </div>
+        <div class="flex gap-3" style="flex-wrap: wrap;">
+          <a href="restaurants.html" class="btn btn-secondary">
+            View All Restaurants
+          </a>
+          <a href="create-restaurant.html" class="btn btn-primary">
+            + Add Restaurant
+          </a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/admin.js"></script>
+<script>Admin.initDashboard();</script>
+
+</body>
+</html>

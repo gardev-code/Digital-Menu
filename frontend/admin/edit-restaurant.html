@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digital Menu Admin — Edit Restaurant" />
+  <title>Edit Restaurant — Digital Menu</title>
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+
+    <a href="dashboard.html" class="sidebar-logo" aria-label="Digital Menu home">
+      <div class="sidebar-logo-mark">DM</div>
+      <span class="sidebar-logo-text">Digital Menu</span>
+    </a>
+
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <div class="sidebar-nav-label">Main</div>
+      <a href="dashboard.html" class="sidebar-nav-link">
+        <span class="nav-icon">⊞</span>
+        Dashboard
+      </a>
+      <a href="restaurants.html" class="sidebar-nav-link">
+        <span class="nav-icon">🍽</span>
+        Restaurants
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" data-user-initial>A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" data-user-name>Loading…</div>
+          <div class="sidebar-user-role" data-user-role>Super Admin</div>
+        </div>
+      </div>
+      <button
+        class="btn btn-ghost btn-full mt-4"
+        data-logout
+        style="justify-content: flex-start; gap: var(--space-3);"
+        aria-label="Sign out"
+      >
+        <span>↩</span> Sign out
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Main -->
+  <div class="admin-main">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle sidebar">☰</button>
+      <h2 class="admin-header-title">Edit Restaurant</h2>
+    </header>
+
+    <!-- Content -->
+    <main class="admin-content">
+
+      <div class="page-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+          <a href="restaurants.html">Restaurants</a>
+          <span class="breadcrumb-sep" aria-hidden="true">/</span>
+          <span id="breadcrumb-name">Edit</span>
+        </nav>
+        <h1 class="page-title">Edit Restaurant</h1>
+        <p class="page-subtitle">Update restaurant details and account status</p>
+      </div>
+
+      <div class="form-page-wrapper">
+
+        <!-- Alert -->
+        <div id="form-alert" role="alert" aria-live="polite" class="mb-4"></div>
+
+        <div class="form-card">
+
+          <form id="edit-restaurant-form" novalidate autocomplete="off">
+
+            <div class="form-stack">
+
+              <!-- Restaurant Name -->
+              <div class="form-group">
+                <label for="name" class="form-label">Restaurant Name <span aria-hidden="true" style="color: var(--danger);">*</span></label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  class="form-input"
+                  placeholder="e.g. Bella Cucina"
+                  required
+                  maxlength="150"
+                />
+              </div>
+
+              <!-- Owner + Email -->
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="owner_name" class="form-label">Owner Name <span aria-hidden="true" style="color: var(--danger);">*</span></label>
+                  <input
+                    type="text"
+                    id="owner_name"
+                    name="owner_name"
+                    class="form-input"
+                    placeholder="Full name"
+                    required
+                    maxlength="100"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="email" class="form-label">Email Address <span aria-hidden="true" style="color: var(--danger);">*</span></label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-input"
+                    placeholder="owner@restaurant.com"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Phone + Status -->
+              <div class="form-grid-2">
+                <div class="form-group">
+                  <label for="phone" class="form-label">Phone Number <span aria-hidden="true" style="color: var(--danger);">*</span></label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    class="form-input"
+                    placeholder="+251 900 000 000"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="status" class="form-label">Status</label>
+                  <select id="status" name="status" class="form-select">
+                    <option value="active">Active — publicly visible</option>
+                    <option value="inactive">Inactive — hidden from public</option>
+                  </select>
+                </div>
+              </div>
+
+            </div><!-- /form-stack -->
+
+            <div class="form-footer">
+              <a href="restaurants.html" class="btn btn-secondary">Cancel</a>
+              <button type="submit" id="submit-btn" class="btn btn-primary">
+                Save Changes
+              </button>
+            </div>
+
+          </form>
+
+        </div><!-- /form-card -->
+      </div><!-- /form-page-wrapper -->
+
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/admin.js"></script>
+<script>Admin.initEditPage();</script>
+
+</body>
+</html>

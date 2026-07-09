@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digital Menu Admin — Manage Restaurants" />
+  <title>Restaurants — Digital Menu</title>
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/admin.css" />
+</head>
+<body>
+
+<div class="admin-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+
+    <a href="dashboard.html" class="sidebar-logo" aria-label="Digital Menu home">
+      <div class="sidebar-logo-mark">DM</div>
+      <span class="sidebar-logo-text">Digital Menu</span>
+    </a>
+
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <div class="sidebar-nav-label">Main</div>
+      <a href="dashboard.html" class="sidebar-nav-link">
+        <span class="nav-icon">⊞</span>
+        Dashboard
+      </a>
+      <a href="restaurants.html" class="sidebar-nav-link">
+        <span class="nav-icon">🍽</span>
+        Restaurants
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar" data-user-initial>A</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name" data-user-name>Loading…</div>
+          <div class="sidebar-user-role" data-user-role>Super Admin</div>
+        </div>
+      </div>
+      <button
+        class="btn btn-ghost btn-full mt-4"
+        data-logout
+        style="justify-content: flex-start; gap: var(--space-3);"
+        aria-label="Sign out"
+      >
+        <span>↩</span> Sign out
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Overlay (mobile) -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Main -->
+  <div class="admin-main">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle sidebar">☰</button>
+      <h2 class="admin-header-title">Restaurants</h2>
+      <div class="admin-header-actions">
+        <a href="create-restaurant.html" class="btn btn-primary btn-sm">+ Add Restaurant</a>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="admin-content">
+
+      <div class="page-header">
+        <h1 class="page-title">Restaurants</h1>
+        <p class="page-subtitle">Manage all restaurant accounts on the platform</p>
+      </div>
+
+      <section class="restaurants-section">
+
+        <!-- Toolbar -->
+        <div class="restaurants-toolbar">
+          <div class="toolbar-left">
+            <div class="search-wrapper">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <input
+                type="search"
+                id="restaurant-search"
+                class="search-input"
+                placeholder="Search by name, owner, or email…"
+                aria-label="Search restaurants"
+              />
+            </div>
+            <span class="restaurants-count text-muted text-sm" id="restaurants-count"></span>
+          </div>
+          <div class="toolbar-right">
+            <a href="create-restaurant.html" class="btn btn-primary btn-sm">+ Add Restaurant</a>
+          </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrapper" style="border: none; border-radius: 0;">
+          <table class="table" aria-label="Restaurants table">
+            <thead>
+              <tr>
+                <th>Restaurant</th>
+                <th>Owner</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="restaurants-tbody">
+              <!-- Populated by admin.js -->
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/admin.js"></script>
+<script>Admin.initRestaurantsPage();</script>
+
+</body>
+</html>

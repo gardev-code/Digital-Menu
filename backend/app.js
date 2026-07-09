@@ -3,6 +3,7 @@
 const express = require('express');
 const cors    = require('cors');
 const dotenv  = require('dotenv');
+const path = require('path');
 
 // Load environment variables as early as possible
 dotenv.config();
@@ -43,6 +44,8 @@ app.get('/', (_req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+app.use('/frontend', express.static(path.join(__dirname, '../frontend')));
 
 // ─────────────────────────────────────────────
 // API Routes (mounted in future batches)
