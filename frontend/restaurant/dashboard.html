@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digital Menu — Restaurant Dashboard" />
+  <title>Dashboard — Digital Menu</title>
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/restaurant.css" />
+</head>
+<body>
+
+<div class="r-shell">
+
+  <!-- Sidebar -->
+  <aside class="r-sidebar" id="r-sidebar">
+
+    <a href="dashboard.html" class="r-sidebar-logo" aria-label="Digital Menu home">
+      <div class="r-sidebar-logo-mark">DM</div>
+      <span class="r-sidebar-logo-text">Digital Menu</span>
+    </a>
+
+    <nav class="r-sidebar-nav" aria-label="Restaurant navigation">
+      <div class="r-sidebar-nav-label">Menu</div>
+      <a href="dashboard.html" class="r-sidebar-nav-link">
+        <span class="r-nav-icon">⊞</span>
+        Dashboard
+      </a>
+      <a href="profile.html" class="r-sidebar-nav-link">
+        <span class="r-nav-icon">🏪</span>
+        My Profile
+      </a>
+    </nav>
+
+    <div class="r-sidebar-footer">
+      <div class="r-sidebar-user">
+        <div class="r-sidebar-avatar" data-r-user-initial>R</div>
+        <div class="r-sidebar-user-info">
+          <div class="r-sidebar-user-name" data-r-user-name>Loading…</div>
+          <div class="r-sidebar-user-role" data-r-user-role>Restaurant Owner</div>
+        </div>
+      </div>
+      <button
+        class="btn btn-ghost btn-full mt-4"
+        data-r-logout
+        style="justify-content: flex-start; gap: var(--space-3);"
+        aria-label="Sign out"
+      >
+        <span>↩</span> Sign out
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Overlay (mobile) -->
+  <div class="r-sidebar-overlay" id="r-sidebar-overlay"></div>
+
+  <!-- Main -->
+  <div class="r-main">
+
+    <!-- Header -->
+    <header class="r-header">
+      <button class="r-menu-toggle" id="r-menu-toggle" aria-label="Toggle sidebar">☰</button>
+      <h2 class="r-header-title">Dashboard</h2>
+    </header>
+
+    <!-- Content -->
+    <main class="r-content">
+
+      <!-- Welcome Banner -->
+      <div class="r-welcome-banner">
+        <div class="r-welcome-icon">🍽️</div>
+        <div class="r-welcome-text">
+          <h2>Welcome, <span id="r-welcome-name">Restaurant</span></h2>
+          <p>Here's a summary of your restaurant account. Contact your platform admin to make changes.</p>
+        </div>
+      </div>
+
+      <div class="r-page-header">
+        <h1 class="r-page-title">Overview</h1>
+        <p class="r-page-subtitle">Your restaurant account at a glance</p>
+      </div>
+
+      <!-- Info Cards -->
+      <div class="r-info-grid">
+
+        <div class="r-info-card">
+          <div class="r-info-card-label">
+            <span class="r-info-card-icon">🏪</span>
+            Restaurant Name
+          </div>
+          <div class="r-info-card-value" id="r-card-name">
+            <div class="r-info-card-value-loading"></div>
+          </div>
+        </div>
+
+        <div class="r-info-card">
+          <div class="r-info-card-label">
+            <span class="r-info-card-icon">👤</span>
+            Owner Name
+          </div>
+          <div class="r-info-card-value" id="r-card-owner">
+            <div class="r-info-card-value-loading"></div>
+          </div>
+        </div>
+
+        <div class="r-info-card">
+          <div class="r-info-card-label">
+            <span class="r-info-card-icon">✉️</span>
+            Email Address
+          </div>
+          <div class="r-info-card-value" id="r-card-email">
+            <div class="r-info-card-value-loading"></div>
+          </div>
+        </div>
+
+        <div class="r-info-card">
+          <div class="r-info-card-label">
+            <span class="r-info-card-icon">📞</span>
+            Phone Number
+          </div>
+          <div class="r-info-card-value" id="r-card-phone">
+            <div class="r-info-card-value-loading"></div>
+          </div>
+        </div>
+
+        <div class="r-info-card full-width">
+          <div class="r-info-card-label">
+            <span class="r-info-card-icon">⚡</span>
+            Account Status
+          </div>
+          <div class="r-info-card-value" id="r-card-status">
+            <div class="r-info-card-value-loading"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick link -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">Quick Actions</span>
+        </div>
+        <div class="flex gap-3">
+          <a href="profile.html" class="btn btn-secondary">View My Profile</a>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/restaurant.js"></script>
+<script>Restaurant.initDashboard();</script>
+
+</body>
+</html>

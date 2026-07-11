@@ -375,6 +375,28 @@ const deleteRestaurant = async (req, res, next) => {
   }
 };
 
+
+const getMyRestaurant = async (req, res, next) => {
+  try {
+    const all = await RestaurantModel.getAllRestaurants();
+    const restaurant = all.find(r => r.user_id === req.user.id);
+
+    if (!restaurant) {
+      return res.status(404).json({
+        success: false,
+        message: 'Restaurant not found.',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: restaurant,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // ─────────────────────────────────────────────
 // Exports
 // ─────────────────────────────────────────────
@@ -385,4 +407,5 @@ module.exports = {
   getRestaurantById,
   updateRestaurant,
   deleteRestaurant,
+  getMyRestaurant,
 };
