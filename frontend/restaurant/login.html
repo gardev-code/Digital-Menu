@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digital Menu — Restaurant Owner Login" />
+  <title>Restaurant Login — Digital Menu</title>
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/restaurant.css" />
+</head>
+<body>
+
+<main class="r-login-page">
+
+  <div class="r-login-card">
+
+    <!-- Logo -->
+    <a href="#" class="r-login-logo" aria-label="Digital Menu">
+      <div class="r-login-logo-mark">DM</div>
+      <span class="r-login-logo-text">Digital Menu</span>
+    </a>
+
+    <!-- Heading -->
+    <div class="r-login-heading">
+      <h1 class="r-login-title">Restaurant Portal</h1>
+      <p class="r-login-subtitle">Sign in to manage your restaurant</p>
+    </div>
+
+    <!-- Alert -->
+    <div id="r-login-alert" class="r-login-alert-wrapper" role="alert" aria-live="polite"></div>
+
+    <!-- Form -->
+    <form id="r-login-form" class="r-login-form" novalidate autocomplete="on">
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email address</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="form-input"
+          placeholder="you@yourrestaurant.com"
+          autocomplete="email"
+          required
+          autofocus
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-input"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          required
+        />
+      </div>
+
+      <div class="r-login-form-footer">
+        <label class="form-check">
+          <input type="checkbox" id="remember-me" />
+          <span class="form-check-label">Remember me</span>
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        id="r-login-btn"
+        class="btn btn-primary btn-full btn-lg"
+        style="background-color: var(--r-accent); border-color: var(--r-accent); color: #000;"
+      >
+        Sign in
+      </button>
+
+    </form>
+
+    <!-- Portal switcher -->
+    <div class="r-login-separator">
+      <p class="r-login-separator-text">
+        Are you a platform admin?
+        <a href="../admin/login.html">Admin login →</a>
+      </p>
+    </div>
+
+  </div>
+
+</main>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/restaurant.js"></script>
+<script>Restaurant.initLoginPage();</script>
+
+</body>
+</html>

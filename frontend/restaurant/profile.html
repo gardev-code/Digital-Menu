@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Digital Menu — Restaurant Profile" />
+  <title>My Profile — Digital Menu</title>
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/restaurant.css" />
+</head>
+<body>
+
+<div class="r-shell">
+
+  <!-- Sidebar -->
+  <aside class="r-sidebar" id="r-sidebar">
+
+    <a href="dashboard.html" class="r-sidebar-logo" aria-label="Digital Menu home">
+      <div class="r-sidebar-logo-mark">DM</div>
+      <span class="r-sidebar-logo-text">Digital Menu</span>
+    </a>
+
+    <nav class="r-sidebar-nav" aria-label="Restaurant navigation">
+      <div class="r-sidebar-nav-label">Menu</div>
+      <a href="dashboard.html" class="r-sidebar-nav-link">
+        <span class="r-nav-icon">⊞</span>
+        Dashboard
+      </a>
+      <a href="profile.html" class="r-sidebar-nav-link">
+        <span class="r-nav-icon">🏪</span>
+        My Profile
+      </a>
+    </nav>
+
+    <div class="r-sidebar-footer">
+      <div class="r-sidebar-user">
+        <div class="r-sidebar-avatar" data-r-user-initial>R</div>
+        <div class="r-sidebar-user-info">
+          <div class="r-sidebar-user-name" data-r-user-name>Loading…</div>
+          <div class="r-sidebar-user-role" data-r-user-role>Restaurant Owner</div>
+        </div>
+      </div>
+      <button
+        class="btn btn-ghost btn-full mt-4"
+        data-r-logout
+        style="justify-content: flex-start; gap: var(--space-3);"
+        aria-label="Sign out"
+      >
+        <span>↩</span> Sign out
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- Overlay (mobile) -->
+  <div class="r-sidebar-overlay" id="r-sidebar-overlay"></div>
+
+  <!-- Main -->
+  <div class="r-main">
+
+    <!-- Header -->
+    <header class="r-header">
+      <button class="r-menu-toggle" id="r-menu-toggle" aria-label="Toggle sidebar">☰</button>
+      <h2 class="r-header-title">My Profile</h2>
+    </header>
+
+    <!-- Content -->
+    <main class="r-content">
+
+      <div class="r-page-header">
+        <nav class="r-breadcrumb" aria-label="Breadcrumb">
+          <a href="dashboard.html">Dashboard</a>
+          <span aria-hidden="true">/</span>
+          <span>My Profile</span>
+        </nav>
+        <h1 class="r-page-title">My Profile</h1>
+        <p class="r-page-subtitle">Your restaurant account information</p>
+      </div>
+
+      <!-- Alert -->
+      <div id="r-profile-alert" role="alert" aria-live="polite" class="mb-6"></div>
+
+      <div class="r-profile-wrapper">
+        <div class="r-profile-card">
+
+          <!-- Profile Header -->
+          <div class="r-profile-header">
+            <div class="r-profile-avatar" id="r-profile-avatar">R</div>
+            <div class="r-profile-identity">
+              <div class="r-profile-name" id="r-profile-header-name">Loading…</div>
+              <div class="r-profile-email" id="r-profile-header-email">—</div>
+            </div>
+          </div>
+
+          <!-- Profile Fields -->
+          <div class="r-profile-fields">
+
+            <div class="r-profile-field">
+              <span class="r-profile-field-label">Restaurant Name</span>
+              <span class="r-profile-field-value" id="r-profile-restaurant-name">—</span>
+            </div>
+
+            <div class="r-profile-field">
+              <span class="r-profile-field-label">Owner Name</span>
+              <span class="r-profile-field-value" id="r-profile-owner-name">—</span>
+            </div>
+
+            <div class="r-profile-field">
+              <span class="r-profile-field-label">Email</span>
+              <span class="r-profile-field-value" id="r-profile-email">—</span>
+            </div>
+
+            <div class="r-profile-field">
+              <span class="r-profile-field-label">Phone</span>
+              <span class="r-profile-field-value" id="r-profile-phone">—</span>
+            </div>
+
+            <div class="r-profile-field">
+              <span class="r-profile-field-label">Status</span>
+              <span class="r-profile-field-value" id="r-profile-status">—</span>
+            </div>
+
+          </div>
+
+          <!-- Future Edit Section -->
+          <div class="r-profile-edit-section">
+            <div class="r-profile-edit-note">
+              <span class="r-profile-edit-note-icon">ℹ</span>
+              <span>
+                To update your restaurant details, please contact your platform administrator.
+                Profile editing will be available in a future update.
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/restaurant.js"></script>
+<script>Restaurant.initProfilePage();</script>
+
+</body>
+</html>

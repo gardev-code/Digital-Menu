@@ -4,7 +4,7 @@ const express = require('express');
 const cors    = require('cors');
 const dotenv  = require('dotenv');
 const path = require('path');
-
+const categoryRoutes = require('./routes/categoryRoutes');
 // Load environment variables as early as possible
 dotenv.config();
 
@@ -52,6 +52,7 @@ app.use('/frontend', express.static(path.join(__dirname, '../frontend')));
 // ─────────────────────────────────────────────
 
 app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/categories', require('./routes/categoryRoutes'));
 
 // Example mount points — uncomment as each batch is delivered:
 // app.use('/api/v1/auth',        require('./routes/auth.routes'));
