@@ -36,3 +36,6 @@ npm-debug.log*
 pids/
 *.pid
 *.seed
+
+# User uploaded files
+backend/uploads/

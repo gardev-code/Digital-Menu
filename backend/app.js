@@ -47,6 +47,7 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/frontend', express.static(path.join(__dirname, '../frontend')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // ─────────────────────────────────────────────
 // API Routes (mounted in future batches)
@@ -54,6 +55,8 @@ app.use('/frontend', express.static(path.join(__dirname, '../frontend')));
 
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/categories', require('./routes/categoryRoutes'));
+
+app.use('/api/menu-items', require('./routes/menuImageRoutes'));
 app.use('/api/menu-items', require('./routes/menuRoutes'));
 
 // Example mount points — uncomment as each batch is delivered:
