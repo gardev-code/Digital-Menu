@@ -34,8 +34,18 @@ CREATE TABLE IF NOT EXISTS menu_items (
   -- Image — URL only; actual upload handled in a future batch
   image_url       VARCHAR(500),
 
-  -- Availability toggle (restaurant can toggle per item)
-  is_available    BOOLEAN         NOT NULL DEFAULT TRUE,
+-- Menu item availability status
+availability VARCHAR(30) NOT NULL DEFAULT 'available'
+CHECK (
+    availability IN (
+        'available',
+        'unavailable',
+        'sold_out',
+        'coming_soon',
+        'temporarily_unavailable',
+        'seasonal'
+    )
+),
 
   -- Display ordering within a category
   display_order   INTEGER         NOT NULL DEFAULT 0,
@@ -72,7 +82,7 @@ CREATE INDEX IF NOT EXISTS idx_menu_items_display_order
 
 -- Speed up availability filtering
 CREATE INDEX IF NOT EXISTS idx_menu_items_availability
-  ON menu_items (restaurant_id, is_available);
+ON menu_items (restaurant_id, availability);
 
 -- Speed up status filtering
 CREATE INDEX IF NOT EXISTS idx_menu_items_status

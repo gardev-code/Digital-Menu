@@ -139,7 +139,7 @@ const createMenuItem = async (req, res, next) => {
 // GET /api/menu-items
 // GET /api/menu-items?category_id=5
 // GET /api/menu-items?status=active
-// GET /api/menu-items?available=true
+// GET /api/menu-items?availability=available
 // GET /api/menu-items?search=burger
 // GET /api/menu-items?restaurant_id=10  (super_admin only)
 // ─────────────────────────────────────────────
@@ -157,7 +157,7 @@ const getMenuItems = async (req, res, next) => {
   try {
     const { role } = req.user;
     let restaurant_id = null;
-    const { category_id, status, available, search } = req.query;
+    const { category_id, status, availability, search } = req.query;
 
     if (role === 'restaurant') {
       // Force restaurant_id from JWT — ignore any client value
@@ -204,24 +204,13 @@ const getMenuItems = async (req, res, next) => {
       });
     }
 
-    // Parse availability filter
-    let isAvailable = null;
-    if (available !== undefined) {
-      if (available === 'true')       isAvailable = true;
-      else if (available === 'false') isAvailable = false;
-      else {
-        return res.status(400).json({
-          success: false,
-          message: "available must be 'true' or 'false'.",
-        });
-      }
-    }
+    
 
     const menuItems = await MenuItemModel.findAll({
       restaurant_id: restaurant_id,
       category_id:   parsedCategoryId,
       status:        status       || null,
-      is_available:  isAvailable,
+      availability: availability,
       search:        search       || null,
     });
 
@@ -344,7 +333,7 @@ const updateMenuItem = async (req, res, next) => {
       name_en, name_am,
       description_en, description_am,
       price, currency,
-      image_url, is_available,
+      image_url, availability,
       display_order, status,
     } = req.body;
 
@@ -404,8 +393,8 @@ const updateMenuItem = async (req, res, next) => {
     if (image_url !== undefined) {
       fields.image_url = image_url ? image_url.trim() : null;
     }
-    if (is_available !== undefined) {
-      fields.is_available = is_available;
+    if (availability !== undefined) {
+    fields.availability = availability;
     }
     if (display_order !== undefined) {
       fields.display_order = parseInt(display_order, 10);

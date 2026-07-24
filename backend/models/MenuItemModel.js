@@ -9,7 +9,7 @@ const db = require('../config/db');
 // table. Multilingual: English + Amharic.
 // Every query is scoped to restaurant_id so
 // cross-tenant access is impossible at the
-// data layer — not just the controller layer.
+// data layer.
 //
 // No HTTP logic — only SQL.
 // ─────────────────────────────────────────────
@@ -39,7 +39,8 @@ const MenuItemModel = {
         name_en, name_am,
         description_en, description_am,
         price, currency,
-        image_url, is_available,
+        image_url, availability,
+        availability, is_featured,
         display_order, status,
         created_at, updated_at
     `;
@@ -54,61 +55,88 @@ const MenuItemModel = {
   },
 
   // ─────────────────────────────────────────
-  // findAll
-  // ─────────────────────────────────────────
+// findAll
+// ─────────────────────────────────────────
 
-  async findAll({
-    restaurant_id = null,
-    category_id   = null,
-    status        = null,
-    is_available  = null,
-    search        = null,
-  } = {}) {
-    const conditions = [];
-    const values     = [];
-    let   idx        = 1;
+async findAll({
+  restaurant_id = null,
+  category_id   = null,
+  status        = null,
+  availability  = null,
+  search        = null,
+} = {}) {
+  const conditions = [];
+  const values     = [];
+  let idx          = 1;
 
-    if (restaurant_id !== null) {
-      conditions.push(`m.restaurant_id = $${idx}`); values.push(restaurant_id); idx++;
-    }
-    if (category_id !== null) {
-      conditions.push(`m.category_id = $${idx}`); values.push(category_id); idx++;
-    }
-    if (status !== null) {
-      conditions.push(`m.status = $${idx}`); values.push(status); idx++;
-    }
-    if (is_available !== null) {
-      conditions.push(`m.is_available = $${idx}`); values.push(is_available); idx++;
-    }
-    if (search !== null) {
-      conditions.push(`(m.name_en ILIKE $${idx} OR m.name_am ILIKE $${idx})`);
-      values.push(`%${search}%`); idx++;
-    }
+  if (restaurant_id !== null) {
+    conditions.push(`m.restaurant_id = $${idx}`);
+    values.push(restaurant_id);
+    idx++;
+  }
 
-    const where = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+  if (category_id !== null) {
+    conditions.push(`m.category_id = $${idx}`);
+    values.push(category_id);
+    idx++;
+  }
 
-    const text = `
-      SELECT
-        m.id, m.restaurant_id, m.category_id,
-        m.name_en, m.name_am,
-        m.description_en, m.description_am,
-        m.price, m.currency,
-        m.image_url, m.is_available,
-        m.display_order, m.status,
-        m.created_at, m.updated_at,
-        r.name        AS restaurant_name,
-        c.name_en     AS category_name_en,
-        c.name_am     AS category_name_am
-      FROM   menu_items  m
-      JOIN   restaurants r ON r.id = m.restaurant_id
-      JOIN   categories  c ON c.id = m.category_id
-      ${where}
-      ORDER  BY m.display_order ASC, m.name_en ASC
-    `;
-    const { rows } = await db.query(text, values);
-    return rows;
-  },
+  if (status !== null) {
+    conditions.push(`m.status = $${idx}`);
+    values.push(status);
+    idx++;
+  }
 
+  if (availability !== null) {
+    conditions.push(`m.availability = $${idx}`);
+    values.push(availability);
+    idx++;
+  }
+
+  if (search !== null) {
+    conditions.push(`(m.name_en ILIKE $${idx} OR m.name_am ILIKE $${idx})`);
+    values.push(`%${search}%`);
+    idx++;
+  }
+
+  const where = conditions.length > 0
+    ? `WHERE ${conditions.join(' AND ')}`
+    : '';
+
+  const text = `
+    SELECT
+      m.id,
+      m.restaurant_id,
+      m.category_id,
+      m.name_en,
+      m.name_am,
+      m.description_en,
+      m.description_am,
+      m.price,
+      m.currency,
+      m.image_url,
+      m.availability,
+      m.is_featured,
+      m.display_order,
+      m.status,
+      m.created_at,
+      m.updated_at,
+      r.name AS restaurant_name,
+      c.name_en AS category_name_en,
+      c.name_am AS category_name_am
+    FROM menu_items m
+    JOIN restaurants r 
+      ON r.id = m.restaurant_id
+    JOIN categories c 
+      ON c.id = m.category_id
+    ${where}
+    ORDER BY m.display_order ASC, m.name_en ASC
+  `;
+
+  const { rows } = await db.query(text, values);
+
+  return rows;
+},
   // ─────────────────────────────────────────
   // findById
   // ─────────────────────────────────────────
@@ -128,7 +156,8 @@ const MenuItemModel = {
         m.name_en, m.name_am,
         m.description_en, m.description_am,
         m.price, m.currency,
-        m.image_url, m.is_available,
+        m.image_url,   m.availability,
+        m.availability, m.is_featured,
         m.display_order, m.status,
         m.created_at, m.updated_at,
         r.name        AS restaurant_name,
@@ -153,8 +182,10 @@ const MenuItemModel = {
       'category_id', 'name_en', 'name_am',
       'description_en', 'description_am',
       'price', 'currency', 'image_url',
-      'is_available', 'display_order', 'status',
+      'availability', 'is_featured',
+      'display_order', 'status',
     ];
+
     const updates = [];
     const values  = [];
     let   idx     = 1;
@@ -183,7 +214,8 @@ const MenuItemModel = {
         name_en, name_am,
         description_en, description_am,
         price, currency,
-        image_url, is_available,
+        image_url, availability,
+        availability, is_featured,
         display_order, status,
         created_at, updated_at
     `;
@@ -214,9 +246,7 @@ const MenuItemModel = {
     const text = excludeId
       ? `SELECT 1 FROM menu_items WHERE LOWER(name_en)=LOWER($1) AND restaurant_id=$2 AND id!=$3 LIMIT 1`
       : `SELECT 1 FROM menu_items WHERE LOWER(name_en)=LOWER($1) AND restaurant_id=$2 LIMIT 1`;
-    const values = excludeId
-      ? [name_en, restaurant_id, excludeId]
-      : [name_en, restaurant_id];
+    const values = excludeId ? [name_en, restaurant_id, excludeId] : [name_en, restaurant_id];
     const { rowCount } = await db.query(text, values);
     return rowCount > 0;
   },
@@ -229,9 +259,7 @@ const MenuItemModel = {
     const text = excludeId
       ? `SELECT 1 FROM menu_items WHERE name_am=$1 AND restaurant_id=$2 AND id!=$3 LIMIT 1`
       : `SELECT 1 FROM menu_items WHERE name_am=$1 AND restaurant_id=$2 LIMIT 1`;
-    const values = excludeId
-      ? [name_am, restaurant_id, excludeId]
-      : [name_am, restaurant_id];
+    const values = excludeId ? [name_am, restaurant_id, excludeId] : [name_am, restaurant_id];
     const { rowCount } = await db.query(text, values);
     return rowCount > 0;
   },
@@ -240,22 +268,11 @@ const MenuItemModel = {
   // updateImage  (Phase 2 Batch 3)
   // ─────────────────────────────────────────
 
-  /**
-   * Set the image_url for a menu item.
-   * Scoped to restaurant_id for tenant safety.
-   *
-   * @param {number} id
-   * @param {number} restaurant_id
-   * @param {string} imageUrl
-   * @returns {Promise<{id: number, image_url: string}|null>}
-   */
   async updateImage(id, restaurant_id, imageUrl) {
     const text = `
       UPDATE menu_items
-      SET    image_url  = $1,
-             updated_at = NOW()
-      WHERE  id            = $2
-        AND  restaurant_id = $3
+      SET    image_url  = $1, updated_at = NOW()
+      WHERE  id = $2 AND restaurant_id = $3
       RETURNING id, image_url
     `;
     const { rows } = await db.query(text, [imageUrl, id, restaurant_id]);
@@ -266,21 +283,11 @@ const MenuItemModel = {
   // removeImage  (Phase 2 Batch 3)
   // ─────────────────────────────────────────
 
-  /**
-   * Set image_url to NULL for a menu item.
-   * Scoped to restaurant_id for tenant safety.
-   *
-   * @param {number} id
-   * @param {number} restaurant_id
-   * @returns {Promise<{id: number}|null>}
-   */
   async removeImage(id, restaurant_id) {
     const text = `
       UPDATE menu_items
-      SET    image_url  = NULL,
-             updated_at = NOW()
-      WHERE  id            = $1
-        AND  restaurant_id = $2
+      SET    image_url = NULL, updated_at = NOW()
+      WHERE  id = $1 AND restaurant_id = $2
       RETURNING id
     `;
     const { rows } = await db.query(text, [id, restaurant_id]);
@@ -291,27 +298,230 @@ const MenuItemModel = {
   // findImageById  (Phase 2 Batch 3)
   // ─────────────────────────────────────────
 
-  /**
-   * Fetch only the image_url for a menu item.
-   * Pass null restaurant_id for super_admin lookups.
-   *
-   * @param {number}      id
-   * @param {number|null} restaurant_id
-   * @returns {Promise<{id: number, image_url: string|null}|null>}
-   */
   async findImageById(id, restaurant_id = null) {
-    let text, values;
-
-    if (restaurant_id !== null) {
-      text   = `SELECT id, image_url FROM menu_items WHERE id=$1 AND restaurant_id=$2 LIMIT 1`;
-      values = [id, restaurant_id];
-    } else {
-      text   = `SELECT id, image_url FROM menu_items WHERE id=$1 LIMIT 1`;
-      values = [id];
-    }
-
+    const text = restaurant_id !== null
+      ? `SELECT id, image_url FROM menu_items WHERE id=$1 AND restaurant_id=$2 LIMIT 1`
+      : `SELECT id, image_url FROM menu_items WHERE id=$1 LIMIT 1`;
+    const values = restaurant_id !== null ? [id, restaurant_id] : [id];
     const { rows } = await db.query(text, values);
     return rows[0] || null;
+  },
+
+  // ─────────────────────────────────────────
+  // findByRestaurantId  (Phase 2 Batch 4)
+  // Returns settings-focused view of menu items.
+  // ─────────────────────────────────────────
+
+  /**
+   * Return all menu items for a restaurant with
+   * settings fields, sorted by display_order.
+   * Pass null to return all restaurants (super_admin).
+   *
+   * @param {number|null} restaurant_id
+   * @returns {Promise<Object[]>}
+   */
+  async findByRestaurantId(restaurant_id = null) {
+    const where  = restaurant_id !== null ? 'WHERE m.restaurant_id = $1' : '';
+    const values = restaurant_id !== null ? [restaurant_id] : [];
+
+    const text = `
+      SELECT
+        m.id,
+        m.restaurant_id,
+        m.category_id,
+        m.name_en,
+        m.name_am,
+        m.price,
+        m.currency,
+        m.image_url,
+        m.availability,
+        m.is_featured,
+        m.display_order,
+        m.status,
+        m.updated_at,
+        r.name      AS restaurant_name,
+        c.name_en   AS category_name_en,
+        c.name_am   AS category_name_am
+      FROM   menu_items  m
+      JOIN   restaurants r ON r.id = m.restaurant_id
+      JOIN   categories  c ON c.id = m.category_id
+      ${where}
+      ORDER  BY m.display_order ASC, m.name_en ASC
+    `;
+    const { rows } = await db.query(text, values);
+    return rows;
+  },
+
+  // ─────────────────────────────────────────
+  // updateAvailability  (Phase 2 Batch 4)
+  // ─────────────────────────────────────────
+
+  /**
+   * Update the availability field of one menu item.
+   * Scoped to restaurant_id for tenant safety.
+   *
+   * @param {number} id
+   * @param {number} restaurant_id
+   * @param {string} availability - 'available'|'unavailable'|'hidden'
+   * @returns {Promise<Object|null>}
+   */
+  async updateAvailability(id, restaurant_id, availability) {
+    const text = `
+      UPDATE menu_items
+      SET    availability = $1, updated_at = NOW()
+      WHERE  id = $2 AND restaurant_id = $3
+      RETURNING id, name_en, name_am, availability, updated_at
+    `;
+    const { rows } = await db.query(text, [availability, id, restaurant_id]);
+    return rows[0] || null;
+  },
+
+  // ─────────────────────────────────────────
+  // updateFeaturedStatus  (Phase 2 Batch 4)
+  // ─────────────────────────────────────────
+
+  /**
+   * Toggle the is_featured flag of one menu item.
+   * Scoped to restaurant_id for tenant safety.
+   *
+   * @param {number}  id
+   * @param {number}  restaurant_id
+   * @param {boolean} is_featured
+   * @returns {Promise<Object|null>}
+   */
+  async updateFeaturedStatus(id, restaurant_id, is_featured) {
+    const text = `
+      UPDATE menu_items
+      SET    is_featured = $1, updated_at = NOW()
+      WHERE  id = $2 AND restaurant_id = $3
+      RETURNING id, name_en, name_am, is_featured, updated_at
+    `;
+    const { rows } = await db.query(text, [is_featured, id, restaurant_id]);
+    return rows[0] || null;
+  },
+
+  // ─────────────────────────────────────────
+  // updateDisplayOrder  (Phase 2 Batch 4)
+  // ─────────────────────────────────────────
+
+  /**
+   * Update the display_order of one menu item.
+   * Scoped to restaurant_id for tenant safety.
+   *
+   * @param {number} id
+   * @param {number} restaurant_id
+   * @param {number} display_order
+   * @returns {Promise<Object|null>}
+   */
+  async updateDisplayOrder(id, restaurant_id, display_order) {
+    const text = `
+      UPDATE menu_items
+      SET    display_order = $1, updated_at = NOW()
+      WHERE  id = $2 AND restaurant_id = $3
+      RETURNING id, name_en, name_am, display_order, updated_at
+    `;
+    const { rows } = await db.query(text, [display_order, id, restaurant_id]);
+    return rows[0] || null;
+  },
+
+  // ─────────────────────────────────────────
+  // bulkUpdateDisplayOrder  (Phase 2 Batch 4)
+  // ─────────────────────────────────────────
+
+  /**
+   * Update display_order for multiple items in one transaction.
+   * All items must belong to restaurant_id.
+   * Rolls back entirely if any item is not found.
+   *
+   * @param {Array<{id: number, display_order: number}>} items
+   * @param {number} restaurant_id
+   * @returns {Promise<Object[]>} updated rows
+   */
+  async bulkUpdateDisplayOrder(items, restaurant_id) {
+    const client = await db.getClient();
+    try {
+      await client.query('BEGIN');
+
+      const updated = [];
+      for (const item of items) {
+        const { rows } = await client.query(
+          `UPDATE menu_items
+           SET    display_order = $1, updated_at = NOW()
+           WHERE  id = $2 AND restaurant_id = $3
+           RETURNING id, name_en, name_am, display_order, updated_at`,
+          [item.display_order, item.id, restaurant_id]
+        );
+
+        if (rows.length === 0) {
+          // Item not found or belongs to another tenant — roll back all
+          await client.query('ROLLBACK');
+          const err = new Error(`Menu item ${item.id} not found.`);
+          err.statusCode = 404;
+          throw err;
+        }
+
+        updated.push(rows[0]);
+      }
+
+      await client.query('COMMIT');
+      return updated;
+
+    } catch (err) {
+      await client.query('ROLLBACK').catch(() => {});
+      throw err;
+    } finally {
+      client.release();
+    }
+  },
+
+  // ─────────────────────────────────────────
+  // bulkUpdateAvailability  (Phase 2 Batch 4)
+  // ─────────────────────────────────────────
+
+  /**
+   * Set the same availability for multiple items in one transaction.
+   * All items must belong to restaurant_id.
+   * Rolls back entirely if any item is not found.
+   *
+   * @param {number[]} ids
+   * @param {number}   restaurant_id
+   * @param {string}   availability
+   * @returns {Promise<Object[]>} updated rows
+   */
+  async bulkUpdateAvailability(ids, restaurant_id, availability) {
+    const client = await db.getClient();
+    try {
+      await client.query('BEGIN');
+
+      const updated = [];
+      for (const id of ids) {
+        const { rows } = await client.query(
+          `UPDATE menu_items
+           SET    availability = $1, updated_at = NOW()
+           WHERE  id = $2 AND restaurant_id = $3
+           RETURNING id, name_en, name_am, availability, updated_at`,
+          [availability, id, restaurant_id]
+        );
+
+        if (rows.length === 0) {
+          await client.query('ROLLBACK');
+          const err = new Error(`Menu item ${id} not found.`);
+          err.statusCode = 404;
+          throw err;
+        }
+
+        updated.push(rows[0]);
+      }
+
+      await client.query('COMMIT');
+      return updated;
+
+    } catch (err) {
+      await client.query('ROLLBACK').catch(() => {});
+      throw err;
+    } finally {
+      client.release();
+    }
   },
 };
 

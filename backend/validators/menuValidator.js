@@ -24,10 +24,13 @@ const VALID_CURRENCIES = ['ETB', 'USD', 'EUR', 'GBP'];
 const validateCreate = (body) => {
   const {
     category_id,
-    name_en, name_am,
-    description_en, description_am,
-    price, currency,
-    image_url, is_available,
+    name_en,
+    name_am,
+    description_en,
+    description_am,
+    price,
+    currency,
+    availability,
     display_order,
   } = body;
 
@@ -105,13 +108,6 @@ const validateCreate = (body) => {
     }
   }
 
-  // ── is_available (optional) ───────────────
-  if (is_available !== undefined && is_available !== null) {
-    if (typeof is_available !== 'boolean') {
-      return 'is_available must be a boolean (true or false).';
-    }
-  }
-
   // ── display_order (optional) ──────────────
   if (display_order !== undefined) {
     const order = parseInt(display_order, 10);
@@ -135,7 +131,7 @@ const validateUpdate = (body) => {
     name_en, name_am,
     description_en, description_am,
     price, currency,
-    image_url, is_available,
+    image_url, availability,
     display_order, status,
   } = body;
 
@@ -143,7 +139,7 @@ const validateUpdate = (body) => {
     category_id, name_en, name_am,
     description_en, description_am,
     price, currency, image_url,
-    is_available, display_order, status,
+    availability, display_order, status,
   ].some(v => v !== undefined);
 
   if (!hasAnyField) {
@@ -224,12 +220,21 @@ const validateUpdate = (body) => {
     }
   }
 
-  // ── is_available ──────────────────────────
-  if (is_available !== undefined && is_available !== null) {
-    if (typeof is_available !== 'boolean') {
-      return 'is_available must be a boolean (true or false).';
-    }
+  // ── availability ──────────────────────────
+if (availability !== undefined && availability !== null) {
+
+  const allowedAvailability = [
+    'available',
+    'unavailable',
+    'sold_out',
+    'coming_soon',
+    'temporarily_unavailable'
+  ];
+
+  if (!allowedAvailability.includes(availability)) {
+    return `availability must be one of: ${allowedAvailability.join(', ')}`;
   }
+}
 
   // ── display_order ─────────────────────────
   if (display_order !== undefined) {

@@ -80,7 +80,7 @@ router.get(
  *   { category_id, name_en, name_am,
  *     description_en, description_am,
  *     price, currency, image_url,
- *     is_available, display_order, status }
+ *     availability, display_order, status }
  */
 router.put(
   '/:id',

@@ -37,5 +37,8 @@ pids/
 *.pid
 *.seed
 
-# User uploaded files
+# Uploaded files
+backend/uploads/
+
+# Uploaded images
 backend/uploads/
